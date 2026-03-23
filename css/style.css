@@ -37,7 +37,7 @@ nav {
     flex-wrap: wrap;
 }
 
-/* ========== LOGO - BRANCA E DO TAMANHO DO TEXTO ========== */
+/* ========== LOGO ========== */
 .logo {
     display: flex;
     align-items: center;
@@ -48,7 +48,6 @@ nav {
     width: 100px;
     height: 100px;
     object-fit: contain;
-    /*filter: brightness(0) invert(1);  Deixa a logo BRANCA */
 }
 
 .logo span {
@@ -389,6 +388,125 @@ hr {
     transform: scale(1.05);
 }
 
+/* ========== DEPOIMENTOS - CARROSSEL ========== */
+.depoimentos-section {
+    margin: 2rem 0 3rem 0;
+}
+
+.depoimentos-title {
+    font-size: 1.6rem;
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+    color: #ffffff;
+    border-left: 4px solid #F97316;
+    padding-left: 1rem;
+}
+
+.depoimentos-carousel {
+    position: relative;
+    width: 100%;
+    min-height: 320px;
+    background: #111111;
+    border-radius: 28px;
+    border: 1px solid #222;
+    overflow: hidden;
+}
+
+.depoimento-slide {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    opacity: 0;
+    transition: opacity 0.8s ease-in-out;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 1.5rem;
+}
+
+.depoimento-slide.active {
+    opacity: 1;
+    position: relative;
+}
+
+.depoimento-slide img {
+    max-width: 100%;
+    max-height: 280px;
+    border-radius: 20px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    object-fit: contain;
+}
+
+.carousel-indicators {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    margin-top: 1.5rem;
+}
+
+.carousel-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: #444;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.carousel-dot.active {
+    background: #F97316;
+    width: 24px;
+    border-radius: 10px;
+}
+
+.carousel-dot:hover {
+    background: #F97316;
+}
+
+/* ========== RECOMENDAÇÕES FIXAS ========== */
+.recomendacoes-fixas-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+    gap: 2rem;
+}
+
+.recomendacao-fixa-card {
+    background: #111111;
+    border-radius: 28px;
+    padding: 1.8rem;
+    border: 1px solid #222;
+    transition: all 0.3s ease;
+}
+
+.recomendacao-fixa-card:hover {
+    transform: translateY(-4px);
+    border-color: #F97316;
+    box-shadow: 0 12px 24px rgba(249, 115, 22, 0.15);
+}
+
+.recomendacao-fixa-img {
+    width: 100%;
+    border-radius: 16px;
+    margin-bottom: 1rem;
+    max-height: 200px;
+    object-fit: contain;
+    background: #1a1a1a;
+}
+
+.recomendacao-fixa-texto {
+    color: #b0b0b0;
+    font-size: 0.95rem;
+    line-height: 1.6;
+    margin-bottom: 0.8rem;
+}
+
+.recomendacao-fixa-autor {
+    color: #F97316;
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+
 /* ========== MODAL ========== */
 .modal {
     display: none;
@@ -405,8 +523,12 @@ hr {
 }
 
 @keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
 }
 
 .modal-content {
@@ -532,11 +654,55 @@ footer {
     }
     
     .logo-img {
-        width: 100px;
-        height: 100px;
+        width: 70px;
+        height: 70px;
     }
     
     .logo span {
-        font-size: 1.4rem;
+        font-size: 1.3rem;
+    }
+    
+    .depoimentos-carousel {
+        min-height: 280px;
+    }
+    
+    .depoimento-slide img {
+        max-height: 220px;
+    }
+    
+    .recomendacoes-fixas-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+    
+    .recomendacao-fixa-card {
+        padding: 1.2rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .logo-img {
+        width: 50px;
+        height: 50px;
+    }
+    
+    .logo span {
+        font-size: 1.1rem;
+    }
+    
+    .nav-links {
+        gap: 0.8rem;
+    }
+    
+    .nav-links a {
+        font-size: 0.8rem;
+    }
+    
+    .depoimentos-carousel {
+        min-height: 240px;
+    }
+    
+    .depoimento-slide img {
+        max-height: 180px;
     }
 }
