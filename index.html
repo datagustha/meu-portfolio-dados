@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gusthavo BI | Análise de Dados & Automação</title>
+    
+    <!-- Favicon (logo laranja na aba) -->
+    <link rel="icon" type="image/png" href="https://i.ibb.co/67p9XVD3/logo-oficial.png"> 
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="css/style.css">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- AOS Animation Library -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+</head>
+<body>
+
+    <header>
+        <div class="container">
+            <nav>
+                <div class="logo" data-aos="fade-right">
+                    <!-- Logo BRANCA no header -->
+                    <img src="https://i.ibb.co/wrdns12S/logo-laranja.png" alt="Logo" class="logo-img">
+                    <span>Gusthavo BI</span>
+                </div>
+                <ul class="nav-links" data-aos="fade-left">
+                    <li><a href="#sobre">Sobre</a></li>
+                    <li><a href="#ferramentas">Ferramentas</a></li>
+                    <li><a href="#projetos-reais">Projetos</a></li>
+                    <li><a href="#automacoes">Automações</a></li>
+                    <li><a href="#treinamento">Treinamento</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <!-- SOBRE -->
+        <section id="sobre">
+            <div class="container">
+                <h2 class="section-title" data-aos="fade-up">👨🏽‍💻 Sobre mim</h2>
+                <div class="sobre-grid">
+                    <div class="sobre-card" data-aos="fade-right" data-aos-delay="100">
+                        <div class="foto-perfil">
+                            <img src="https://i.ibb.co/SDzLszGR/eu.jpg" alt="Luiz Gusthavo">
+                        </div>
+                        <h3>Luiz Gusthavo</h3>
+                        <p class="subtitulo">Analista de Dados | BI | Automação de Processos</p>
+                        <p>👨🏽‍💻 Apaixonado por desvendar insights e automatizar processos a partir de dados!</p>
+                        <p>📊 Minha trajetória é marcada pelo foco em <strong>análise de dados e automação</strong>. Utilizo <strong>Python e n8n</strong> para otimizar fluxos de trabalho manuais, <strong>SQL</strong> para estruturar consultas complexas e <strong>Power BI</strong> para criar dashboards interativos que guiam a estratégia de negócios.</p>
+                        <div class="social-links">
+                            <a href="https://www.linkedin.com/in/gusthavobi" target="_blank"><i class="fab fa-linkedin"></i> LinkedIn</a>
+                        </div>
+                    </div>
+                    <div class="sobre-card" data-aos="fade-left" data-aos-delay="200">
+                        <h3>📚 Formação & Cursos</h3>
+                        <p><strong>🎓 Sistemas de Informação</strong> – UFF (2024–2029)</p>
+                        <p><strong>📦 Tecnólogo em Logística</strong> – Estácio de Sá</p>
+                        <p><strong>📊 Data Analytics</strong> – Xperiun</p>
+                        <p><strong>📈 Formação em Dados</strong> – Cubo Três</p>
+                        <p><strong>📉 Power BI</strong> – Senac</p>
+                        <hr>
+                        <h3>💼 Experiência com Foco em Dados</h3>
+                        <p><strong>ASV · Análise de Dados e Automação</strong> (ago/2025 – atual)<br> 
+                        • Elaboração de relatórios estratégicos em <strong>Power BI</strong><br>
+                        • Automação de processos com <strong>n8n</strong> para envio direcionado de dados<br>
+                        • Integração entre fontes de dados e otimização de fluxos</p>
+                        <p><strong>Sim Facilita · Controladoria / Dados</strong> (out/2022 – atual)<br> 
+                        • Automação com <strong>Python e n8n</strong>, reduzindo tarefas manuais em 70%<br>
+                        • Dashboards em <strong>Power BI</strong> para KPIs operacionais e financeiros<br>
+                        • Consultas em <strong>SQL</strong> para alimentar relatórios analíticos</p>
+                        <div class="badges">
+                            <span class="badge">Data-driven</span>
+                            <span class="badge">Automação</span>
+                            <span class="badge">Python</span>
+                            <span class="badge">SQL</span>
+                            <span class="badge">n8n</span>
+                            <span class="badge">Power BI</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- FERRAMENTAS -->
+        <section id="ferramentas">
+            <div class="container">
+                <h2 class="section-title" data-aos="fade-up">🛠️ Ferramentas & Tecnologias</h2>
+                <div class="tools-grid" id="toolsGrid"></div>
+            </div>
+        </section>
+
+        <!-- PROJETOS REAIS -->
+        <section id="projetos-reais">
+            <div class="container">
+                <h2 class="section-title" data-aos="fade-up">🏢 Projetos Reais</h2>
+                <div class="projects-grid" id="projetosReaisContainer"></div>
+            </div>
+        </section>
+
+        <!-- AUTOMAÇÕES -->
+        <section id="automacoes">
+            <div class="container">
+                <h2 class="section-title" data-aos="fade-up">⚙️ Automações & Scripts</h2>
+                <div class="automacoes-grid" id="automacoesContainer"></div>
+            </div>
+        </section>
+
+        <!-- TREINAMENTO -->
+        <section id="treinamento">
+            <div class="container">
+                <h2 class="section-title" data-aos="fade-up">📚 Portfólio de Treinamento</h2>
+                
+                <!-- Destaque Champions -->
+                <div class="champion-spotlight" data-aos="zoom-in" id="championSpotlight"></div>
+                
+                <div class="projects-grid" id="treinamentoContainer"></div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>🔍 Transformando dados em decisões — Portfólio em evolução</p>
+            <p>Niterói – RJ | datagustha@gmail.com | (21) 99596-8380</p>
+        </div>
+    </footer>
+
+    <!-- MODAL -->
+    <div id="projectModal" class="modal">
+        <div class="modal-content">
+            <button class="modal-close">&times;</button>
+            <h3 id="modalTitle"></h3>
+            <p id="modalDesc"></p>
+            <div class="modal-link" id="modalLink"></div>
+            <img id="modalImg" style="max-width:100%; margin-top: 1rem; border-radius: 20px;">
+            <div style="margin-top: 1rem;">
+                <a href="#" id="modalBtn" target="_blank" class="btn-primary">🔗 Acessar</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- MARCA D'ÁGUA -->
+    <div class="watermark">
+        <img src="https://i.ibb.co/wrdns12S/logo-laranja.png" alt="Logo">
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="js/script.js"></script>
+</body>
+</html>
