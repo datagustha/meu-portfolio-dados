@@ -23,7 +23,7 @@ const projetosReais = [
         shortDesc: "Dashboard para gestão de carteira de clientes, análise de inadimplência e performance financeira.",
         fullDesc: `
             <strong>📊 Sobre o Projeto:</strong><br>
-            Dashboard desenvolvido para gestão completa de carteira de clientes financiados (veículos). A ferramenta permite acompanhar em tempo real o comportamento de pagamento, inadimplência e rentabilidade da operação.<br><br>
+            Dashboard desenvolvido para gestão completa de carteira de clientes financiados (piscinas). A ferramenta permite acompanhar em tempo real o comportamento de pagamento, inadimplência e rentabilidade da operação.<br><br>
             
             <strong>🎯 Contexto e Objetivos:</strong><br>
             Como Analista de BI, desenvolvi este Dashboard para fornecer uma visão 360° da carteira de clientes. O principal objetivo é monitorar a saúde financeira da operação, identificar clientes em risco de inadimplência e otimizar a gestão de cobrança.<br><br>
@@ -51,6 +51,39 @@ const projetosReais = [
         `,
         link: "https://app.powerbi.com/view?r=eyJrIjoiNDBkNWEzNjktM2ZkNS00Zjc0LTkzODMtYjdlNmM5M2RlMjZkIiwidCI6ImM2MGM2YThhLWEwOWYtNDBlMy1hOWE0LTdiOGU1NWNmMjMxOCJ9",
         img: "https://i.ibb.co/svn20qQ2/tela-carteira-IN.png"
+    },
+    {
+        id: 2,
+        title: "⚙️ PIPELINE DE AUTOMAÇÃO E BI",
+        shortDesc: "Evolução de processo manual de relatórios em Excel para uma plataforma web 100% automatizada com acesso seguro.",
+        fullDesc: `
+            <strong>⚙️ Sobre o Projeto:</strong><br>
+            Case completo de evolução tecnológica de uma operação de cobrança. O projeto demonstra a transformação de um processo 100% manual para uma plataforma web totalmente automatizada.<br><br>
+            
+            <strong>🎯 O Desafio Operacional:</strong><br>
+            Horas de trabalho diário consumidas em acesso a CRM, download de planilhas e limpeza de dados. Além disso, o envio de resultados exigia prints manuais diários no WhatsApp para cada operador, gerando custos altos com licenças de BI.<br><br>
+            
+            <strong>📈 A Evolução da Solução:</strong><br>
+            • <strong>Fase 1:</strong> Padronização com Power Query.<br>
+            • <strong>Fase 2:</strong> Dashboards em Power BI (paliativo devido a custos de licença).<br>
+            • <strong>Fase 3:</strong> Centralização em Banco de Dados Relacional (SQL).<br>
+            • <strong>Fase 4:</strong> Scripts em Python para ETL automatizado.<br>
+            • <strong>Fase 5:</strong> Criação de Dashboard Web Próprio (Dash/Python) em VPS Linux, eliminando licenciamento.<br>
+            • <strong>Fase 6:</strong> Acesso seguro via senhas (hash) para visualização individual por operador.<br><br>
+            
+            <strong>📊 Impacto Real:</strong><br>
+            • Zero custo com licenciamento de software de BI.<br>
+            • Fim do envio de prints pelo WhatsApp.<br>
+            • Escalabilidade operacional total.<br><br>
+            
+            <strong>🔒 Aviso de Privacidade:</strong><br>
+            Os dados visuais deste case foram completamente alterados e são 100% fictícios para preservar a confidencialidade da operação real.<br><br>
+            
+            <strong>🛠️ Tecnologias Envolvidas:</strong><br>
+            Python (Dash) | SQL | Linux | Power BI | ETL | Segurança (Hash)
+        `,
+        link: "case-automacao.html",
+        img: "https://i.ibb.co/fzdz0RHn/relatorio-novo.gif"
     }
 ];
 
@@ -271,7 +304,7 @@ function renderDepoimentosCarousel() {
     const slidesContainer = document.getElementById('depoimentosCarousel');
     const indicatorsContainer = document.getElementById('carouselIndicators');
     if (!slidesContainer) return;
-    
+
     // Preencher os slides
     depoimentosSlides.forEach((slide, index) => {
         const slideDiv = document.getElementById(`slide${index + 1}`);
@@ -281,7 +314,7 @@ function renderDepoimentosCarousel() {
             `;
         }
     });
-    
+
     // Criar indicadores
     if (indicatorsContainer) {
         indicatorsContainer.innerHTML = '';
@@ -298,12 +331,12 @@ function renderDepoimentosCarousel() {
 function showSlide(index) {
     const slides = document.querySelectorAll('.depoimento-slide');
     const dots = document.querySelectorAll('.carousel-dot');
-    
+
     if (slides.length === 0) return;
-    
+
     slides.forEach(slide => slide.classList.remove('active'));
     dots.forEach(dot => dot.classList.remove('active'));
-    
+
     slides[index].classList.add('active');
     if (dots[index]) dots[index].classList.add('active');
     currentSlide = index;
@@ -344,7 +377,7 @@ const recomendacoesFixas = [
 function renderRecomendacoesFixas() {
     const container = document.getElementById('recomendacoesFixasContainer');
     if (!container) return;
-    
+
     container.innerHTML = recomendacoesFixas.map(rec => `
         <div class="recomendacao-fixa-card" data-aos="fade-up">
             <img class="recomendacao-fixa-img" src="${rec.imagem}" alt="Recomendação de ${rec.autor}">
@@ -384,7 +417,7 @@ function renderProjects(projects, containerId, hasAnimation = true) {
             </div>
         </div>
     `).join('');
-    
+
     document.querySelectorAll(`#${containerId} .project-card`).forEach(card => {
         card.addEventListener('click', () => {
             const id = parseInt(card.dataset.id);
@@ -410,7 +443,7 @@ function renderAutomacoes() {
             </div>
         </div>
     `).join('');
-    
+
     document.querySelectorAll('.automacao-card').forEach(card => {
         card.addEventListener('click', () => {
             const id = parseInt(card.dataset.id);
@@ -455,9 +488,9 @@ function openModal(project) {
     const modal = document.getElementById('projectModal');
     document.getElementById('modalTitle').innerHTML = project.title;
     document.getElementById('modalDesc').innerHTML = project.fullDesc;
-    
+
     let linkHtml = `<strong>🔗 Link:</strong> <a href="${project.link}" target="_blank" style="color: #F97316;">${project.link.substring(0, 60)}...</a>`;
-    
+
     if (project.champion && project.liveLink && project.postLink) {
         linkHtml += `<div style="margin-top: 0.8rem;">
             <strong>🏆 Destaque:</strong><br>
@@ -465,7 +498,7 @@ function openModal(project) {
             <a href="${project.liveLink}" target="_blank" style="color: #F97316;"><i class="fab fa-youtube"></i> Live da premiação</a>
         </div>`;
     }
-    
+
     document.getElementById('modalLink').innerHTML = linkHtml;
     document.getElementById('modalImg').src = project.img;
     document.getElementById('modalBtn').href = project.link;
@@ -485,7 +518,7 @@ function init() {
         once: true,
         offset: 100
     });
-    
+
     renderTools();
     renderProjects(projetosReais, 'projetosReaisContainer');
     renderAutomacoes();
@@ -493,7 +526,7 @@ function init() {
     renderDepoimentosCarousel();
     renderRecomendacoesFixas();
     renderProjects(treinamento, 'treinamentoContainer');
-    
+
     // Iniciar carrossel após renderizar
     setTimeout(() => {
         if (document.querySelectorAll('.depoimento-slide').length > 0) {
@@ -501,10 +534,10 @@ function init() {
             startCarousel();
         }
     }, 100);
-    
+
     const closeBtn = document.querySelector('.modal-close');
     if (closeBtn) closeBtn.addEventListener('click', closeModal);
-    
+
     window.addEventListener('click', (e) => {
         const modal = document.getElementById('projectModal');
         if (e.target === modal) closeModal();

@@ -1,0 +1,1358 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pipeline de Automação Operacional | Gusthavo BI</title>
+    <link rel="icon" type="image/png" href="https://i.ibb.co/67p9XVD3/logo-oficial.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --orange: #F97316;
+            --orange-glow: rgba(249,115,22,0.18);
+            --orange-dim: rgba(249,115,22,0.08);
+            --bg: #080808;
+            --surface: #101010;
+            --surface2: #161616;
+            --border: #1e1e1e;
+            --border-active: rgba(249,115,22,0.4);
+            --text: #e8e8e8;
+            --muted: #888;
+            --mono: 'JetBrains Mono', monospace;
+            --sans: 'Space Grotesk', sans-serif;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: var(--sans);
+            background: var(--bg);
+            color: var(--text);
+            overflow-x: hidden;
+        }
+
+        /* ── GRID NOISE BACKGROUND ── */
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image:
+                linear-gradient(rgba(249,115,22,0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(249,115,22,0.03) 1px, transparent 1px);
+            background-size: 60px 60px;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 28px;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* ── BACK NAV ── */
+        .back-nav {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: rgba(8,8,8,0.92);
+            backdrop-filter: blur(16px);
+            border-bottom: 1px solid var(--border);
+            padding: 1rem 0;
+        }
+
+        .back-nav .container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .back-btn {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            text-decoration: none;
+            color: var(--muted);
+            font-size: 0.85rem;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+
+        .back-btn:hover { color: var(--orange); }
+
+        .nav-tag {
+            font-family: var(--mono);
+            font-size: 0.7rem;
+            color: var(--orange);
+            background: var(--orange-dim);
+            border: 1px solid var(--border-active);
+            padding: 0.3rem 0.8rem;
+            border-radius: 4px;
+        }
+
+        /* ── HERO ── */
+        .hero {
+            padding: 6rem 0 4rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-glow {
+            position: absolute;
+            top: -100px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 800px;
+            height: 400px;
+            background: radial-gradient(ellipse, rgba(249,115,22,0.12) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .hero-label {
+            font-family: var(--mono);
+            font-size: 0.72rem;
+            color: var(--orange);
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .hero-label::before {
+            content: '';
+            width: 24px;
+            height: 1px;
+            background: var(--orange);
+        }
+
+        .hero h1 {
+            font-size: clamp(2rem, 5vw, 3.4rem);
+            font-weight: 700;
+            line-height: 1.1;
+            color: #fff;
+            margin-bottom: 1.2rem;
+            letter-spacing: -0.02em;
+        }
+
+        .hero h1 span {
+            background: linear-gradient(135deg, var(--orange), #ffb347);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .hero-sub {
+            font-size: 1.1rem;
+            color: var(--muted);
+            max-width: 680px;
+            line-height: 1.7;
+            margin-bottom: 2.5rem;
+        }
+
+        .hero-meta {
+            display: flex;
+            gap: 2rem;
+            flex-wrap: wrap;
+            margin-bottom: 3rem;
+        }
+
+        .meta-item {
+            display: flex;
+            flex-direction: column;
+            gap: 0.2rem;
+        }
+
+        .meta-label {
+            font-family: var(--mono);
+            font-size: 0.65rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--muted);
+        }
+
+        .meta-value {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--text);
+        }
+
+        .fictional-notice {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(249,115,22,0.08);
+            border: 1px solid rgba(249,115,22,0.25);
+            border-radius: 8px;
+            padding: 0.7rem 1.2rem;
+            font-size: 0.8rem;
+            color: var(--orange);
+            margin-bottom: 3rem;
+        }
+
+        /* ── HERO GIF SHOWCASE ── */
+        .hero-gif-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 1.2rem;
+            margin-bottom: 5rem;
+        }
+
+        .hero-gif-main {
+            border-radius: 16px;
+            overflow: hidden;
+            border: 1px solid var(--border-active);
+            box-shadow: 0 0 40px var(--orange-glow);
+            position: relative;
+        }
+
+        .hero-gif-main img {
+            width: 100%;
+            height: 280px;
+            object-fit: cover;
+            display: block;
+        }
+
+        .gif-badge {
+            position: absolute;
+            top: 12px;
+            left: 12px;
+            background: rgba(8,8,8,0.85);
+            border: 1px solid var(--border-active);
+            border-radius: 6px;
+            padding: 0.3rem 0.7rem;
+            font-family: var(--mono);
+            font-size: 0.65rem;
+            color: var(--orange);
+            backdrop-filter: blur(8px);
+        }
+
+        .hero-gif-stack {
+            display: flex;
+            flex-direction: column;
+            gap: 1.2rem;
+        }
+
+        .hero-gif-small {
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid var(--border);
+            transition: border-color 0.3s;
+            position: relative;
+        }
+
+        .hero-gif-small:hover { border-color: var(--border-active); }
+
+        .hero-gif-small img {
+            width: 100%;
+            height: 125px;
+            object-fit: cover;
+            display: block;
+        }
+
+        /* ── SECTION GENERIC ── */
+        section {
+            padding: 5rem 0;
+            position: relative;
+            z-index: 1;
+        }
+
+        .section-eyebrow {
+            font-family: var(--mono);
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            color: var(--orange);
+            margin-bottom: 0.8rem;
+        }
+
+        .section-title {
+            font-size: clamp(1.5rem, 3vw, 2.2rem);
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 1.2rem;
+            letter-spacing: -0.02em;
+        }
+
+        .section-desc {
+            color: var(--muted);
+            line-height: 1.7;
+            max-width: 700px;
+            margin-bottom: 3rem;
+        }
+
+        .divider {
+            border: none;
+            border-top: 1px solid var(--border);
+            margin: 0;
+        }
+
+        /* ── PROBLEMA ── */
+        .problem-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .problem-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 1.8rem;
+            transition: all 0.3s ease;
+        }
+
+        .problem-card:hover {
+            border-color: var(--border-active);
+            background: var(--surface2);
+        }
+
+        .problem-card-icon {
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+        }
+
+        .problem-card h3 {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #fff;
+            margin-bottom: 0.6rem;
+        }
+
+        .problem-card p {
+            font-size: 0.85rem;
+            color: var(--muted);
+            line-height: 1.6;
+        }
+
+        /* ── BEFORE IMAGES ── */
+        .before-imgs {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .before-img-item {
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid var(--border);
+            position: relative;
+        }
+
+        .before-img-item img {
+            width: 100%;
+            height: 160px;
+            object-fit: cover;
+            filter: saturate(0.6) brightness(0.85);
+            transition: filter 0.3s;
+        }
+
+        .before-img-item:hover img { filter: saturate(1) brightness(1); }
+
+        .before-img-label {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(transparent, rgba(0,0,0,0.85));
+            padding: 0.8rem 0.7rem 0.5rem;
+            font-family: var(--mono);
+            font-size: 0.65rem;
+            color: #ccc;
+        }
+
+        /* ── TIMELINE ── */
+        .timeline {
+            position: relative;
+            padding-left: 2.5rem;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 8px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: linear-gradient(to bottom, var(--orange), transparent);
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 3.5rem;
+            opacity: 0;
+            transform: translateX(-20px);
+            transition: all 0.6s ease;
+        }
+
+        .timeline-item.visible {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -2.06rem;
+            top: 6px;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: var(--surface);
+            border: 2px solid var(--border);
+            transition: all 0.3s;
+        }
+
+        .timeline-item:hover::before {
+            background: var(--orange);
+            border-color: var(--orange);
+            box-shadow: 0 0 12px var(--orange);
+        }
+
+        .timeline-step {
+            font-family: var(--mono);
+            font-size: 0.65rem;
+            color: var(--orange);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 0.5rem;
+        }
+
+        .timeline-item h3 {
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 0.6rem;
+        }
+
+        .timeline-item p {
+            font-size: 0.88rem;
+            color: var(--muted);
+            line-height: 1.65;
+            margin-bottom: 1rem;
+            max-width: 600px;
+        }
+
+        .timeline-img-row {
+            display: grid;
+            gap: 1rem;
+            margin-top: 1.2rem;
+        }
+
+        .timeline-img-row.cols-2 { grid-template-columns: 1fr 1fr; }
+        .timeline-img-row.cols-3 { grid-template-columns: repeat(3, 1fr); }
+        .timeline-img-row.cols-1 { grid-template-columns: 1fr; max-width: 600px; }
+
+        .timeline-img-item {
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid var(--border);
+            transition: all 0.3s;
+        }
+
+        .timeline-img-item:hover {
+            border-color: var(--border-active);
+            transform: scale(1.02);
+        }
+
+        .timeline-img-item img {
+            width: 100%;
+            height: 160px;
+            object-fit: cover;
+            display: block;
+        }
+
+        .timeline-tags {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            margin-top: 0.8rem;
+        }
+
+        .tag {
+            font-family: var(--mono);
+            font-size: 0.67rem;
+            background: var(--orange-dim);
+            border: 1px solid rgba(249,115,22,0.2);
+            color: var(--orange);
+            padding: 0.25rem 0.7rem;
+            border-radius: 4px;
+        }
+
+        /* ── STACK ── */
+        .stack-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+            gap: 1rem;
+        }
+
+        .stack-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 1.2rem 1rem;
+            text-align: center;
+            transition: all 0.3s;
+            cursor: default;
+        }
+
+        .stack-card:hover {
+            border-color: var(--border-active);
+            background: var(--surface2);
+            transform: translateY(-4px);
+            box-shadow: 0 8px 24px var(--orange-glow);
+        }
+
+        .stack-icon {
+            font-size: 1.8rem;
+            margin-bottom: 0.6rem;
+        }
+
+        .stack-name {
+            font-weight: 600;
+            font-size: 0.85rem;
+            color: #fff;
+            margin-bottom: 0.2rem;
+        }
+
+        .stack-cat {
+            font-family: var(--mono);
+            font-size: 0.6rem;
+            color: var(--muted);
+        }
+
+        /* ── BEFORE / AFTER ── */
+        .ba-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+        }
+
+        .ba-card {
+            border-radius: 18px;
+            overflow: hidden;
+            border: 1px solid var(--border);
+        }
+
+        .ba-header {
+            padding: 1rem 1.4rem;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .ba-card.before .ba-header { background: rgba(255,255,255,0.03); }
+        .ba-card.after .ba-header { background: rgba(249,115,22,0.06); border-color: rgba(249,115,22,0.2); border-top: 0; border-left: 0; border-right: 0; }
+        .ba-card.after { border-color: rgba(249,115,22,0.3); }
+
+        .ba-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+        }
+
+        .ba-card.before .ba-dot { background: #555; }
+        .ba-card.after .ba-dot { background: var(--orange); box-shadow: 0 0 8px var(--orange); }
+
+        .ba-title {
+            font-family: var(--mono);
+            font-size: 0.72rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        .ba-card.before .ba-title { color: var(--muted); }
+        .ba-card.after .ba-title { color: var(--orange); }
+
+        .ba-list {
+            list-style: none;
+            padding: 1.4rem;
+        }
+
+        .ba-list li {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.7rem;
+            font-size: 0.87rem;
+            color: var(--muted);
+            margin-bottom: 0.75rem;
+            line-height: 1.5;
+        }
+
+        .ba-card.after .ba-list li { color: var(--text); }
+
+        .ba-list li::before {
+            content: '—';
+            color: #444;
+            flex-shrink: 0;
+            margin-top: 1px;
+        }
+
+        .ba-card.after .ba-list li::before {
+            content: '✓';
+            color: var(--orange);
+        }
+
+        /* ── IMPACTO ── */
+        .impact-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 1.2rem;
+            margin-bottom: 3rem;
+        }
+
+        .impact-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 1.8rem 1.4rem;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .impact-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--orange), transparent);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .impact-card:hover { border-color: var(--border-active); transform: translateY(-4px); }
+        .impact-card:hover::before { opacity: 1; }
+
+        .impact-icon { font-size: 1.6rem; margin-bottom: 0.8rem; }
+
+        .impact-title {
+            font-weight: 700;
+            font-size: 0.9rem;
+            color: #fff;
+            margin-bottom: 0.4rem;
+        }
+
+        .impact-desc {
+            font-size: 0.8rem;
+            color: var(--muted);
+            line-height: 1.5;
+        }
+
+        /* ── DASHBOARD GALLERY ── */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+        }
+
+        .gallery-item {
+            border-radius: 14px;
+            overflow: hidden;
+            border: 1px solid var(--border);
+            cursor: pointer;
+            position: relative;
+            transition: all 0.3s;
+        }
+
+        .gallery-item:hover {
+            border-color: var(--border-active);
+            transform: scale(1.02);
+            box-shadow: 0 8px 24px var(--orange-glow);
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+            display: block;
+            transition: transform 0.4s;
+        }
+
+        .gallery-item:hover img { transform: scale(1.06); }
+
+        .gallery-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(transparent 50%, rgba(0,0,0,0.8));
+            display: flex;
+            align-items: flex-end;
+            padding: 0.8rem;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .gallery-item:hover .gallery-overlay { opacity: 1; }
+
+        .gallery-label {
+            font-family: var(--mono);
+            font-size: 0.65rem;
+            color: #fff;
+        }
+
+        /* ── LIGHTBOX ── */
+        .lightbox {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.95);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        .lightbox.open { display: flex; }
+
+        .lightbox img {
+            max-width: 92vw;
+            max-height: 88vh;
+            border-radius: 12px;
+            border: 1px solid var(--border-active);
+            cursor: default;
+        }
+
+        .lightbox-close {
+            position: absolute;
+            top: 1.5rem;
+            right: 1.5rem;
+            font-size: 2rem;
+            color: var(--muted);
+            cursor: pointer;
+            transition: color 0.2s;
+            background: none;
+            border: none;
+            line-height: 1;
+        }
+
+        .lightbox-close:hover { color: var(--orange); }
+
+        /* ── FOOTER CTA ── */
+        .cta-section {
+            padding: 5rem 0;
+            text-align: center;
+        }
+
+        .cta-box {
+            background: var(--surface);
+            border: 1px solid var(--border-active);
+            border-radius: 24px;
+            padding: 3.5rem 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-box::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 300px;
+            height: 150px;
+            background: radial-gradient(ellipse, rgba(249,115,22,0.15), transparent 70%);
+            pointer-events: none;
+        }
+
+        .cta-box h2 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 0.8rem;
+        }
+
+        .cta-box p {
+            color: var(--muted);
+            margin-bottom: 2rem;
+        }
+
+        .btn-cta {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.6rem;
+            background: var(--orange);
+            color: #000;
+            font-weight: 700;
+            padding: 0.9rem 2rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-size: 0.95rem;
+            transition: all 0.3s;
+        }
+
+        .btn-cta:hover {
+            background: #ffb347;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(249,115,22,0.4);
+        }
+
+        .btn-secondary {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.6rem;
+            background: transparent;
+            color: var(--orange);
+            font-weight: 600;
+            padding: 0.9rem 2rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-size: 0.95rem;
+            border: 1px solid var(--border-active);
+            margin-left: 1rem;
+            transition: all 0.3s;
+        }
+
+        .btn-secondary:hover {
+            background: var(--orange-dim);
+            transform: translateY(-2px);
+        }
+
+        /* ── RESPONSIVE ── */
+        @media (max-width: 768px) {
+            .hero-gif-grid { grid-template-columns: 1fr; }
+            .hero-gif-stack { flex-direction: row; }
+            .hero-gif-small img { height: 100px; }
+            .problem-grid { grid-template-columns: 1fr; }
+            .before-imgs { grid-template-columns: 1fr 1fr; }
+            .ba-grid { grid-template-columns: 1fr; }
+            .gallery-grid { grid-template-columns: 1fr 1fr; }
+            .timeline-img-row.cols-3 { grid-template-columns: 1fr 1fr; }
+            .timeline-img-row.cols-2 { grid-template-columns: 1fr; }
+            .hero-meta { gap: 1.2rem; }
+        }
+
+        @media (max-width: 480px) {
+            .gallery-grid { grid-template-columns: 1fr; }
+            .before-imgs { grid-template-columns: 1fr; }
+            .btn-secondary { margin-left: 0; margin-top: 0.8rem; }
+        }
+
+        /* ── FADE IN ANIMATION ── */
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(24px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        .fade-up {
+            animation: fadeUp 0.7s ease both;
+        }
+
+        .delay-1 { animation-delay: 0.1s; }
+        .delay-2 { animation-delay: 0.2s; }
+        .delay-3 { animation-delay: 0.3s; }
+        .delay-4 { animation-delay: 0.4s; }
+    </style>
+</head>
+<body>
+
+<!-- BACK NAV -->
+<nav class="back-nav">
+    <div class="container">
+        <a href="index.html" class="back-btn">
+            <i class="fas fa-arrow-left"></i> Voltar ao portfólio
+        </a>
+        <span class="nav-tag">// case · automação · ETL · infra</span>
+    </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+    <div class="hero-glow"></div>
+    <div class="container">
+        <div class="hero-label fade-up">Case de Sucesso · Projeto Real</div>
+
+        <h1 class="fade-up delay-1">
+            De Excel Manual para<br>
+            <span>Pipeline 100% Automatizada</span>
+        </h1>
+
+        <p class="hero-sub fade-up delay-2">
+            Transformação completa de um processo operacional de cobrança — do relatório manual no Excel e envios de prints por WhatsApp, até uma infraestrutura com banco de dados, automação e um <strong>Dashboard Web próprio</strong> rodando 24/7 em VPS Linux.
+        </p>
+
+        <div class="fictional-notice fade-up delay-2">
+            <i class="fas fa-shield-alt"></i>
+            <strong>Aviso de privacidade:</strong>&nbsp; Os dados exibidos neste case foram completamente alterados e são 100% fictícios, preservando a confidencialidade da operação real.
+        </div>
+
+        <div class="hero-meta fade-up delay-3">
+            <div class="meta-item">
+                <span class="meta-label">Empresa</span>
+                <span class="meta-value">Sim Facilita</span>
+            </div>
+            <div class="meta-item">
+                <span class="meta-label">Área</span>
+                <span class="meta-value">Controladoria / Dados</span>
+            </div>
+            <div class="meta-item">
+                <span class="meta-label">Duração</span>
+                <span class="meta-value">Evolução contínua</span>
+            </div>
+            <div class="meta-item">
+                <span class="meta-label">Stack</span>
+                <span class="meta-value">Python (Dash) · SQL · Linux · Segurança (Hash)</span>
+            </div>
+        </div>
+
+        <!-- GIF SHOWCASE -->
+        <div class="hero-gif-grid fade-up delay-4">
+            <div class="hero-gif-main">
+                <img src="https://i.ibb.co/fzdz0RHn/relatorio-novo.gif" alt="Dashboard automatizado rodando">
+                <span class="gif-badge">● LIVE — dashboard automatizado</span>
+            </div>
+            <div class="hero-gif-stack">
+                <div class="hero-gif-small">
+                    <img src="https://i.ibb.co/39DKCRz2/Adobe-Express-relatorio-powerbi.gif" alt="Power BI em ação">
+                    <span class="gif-badge" style="font-size:0.6rem;">Power BI</span>
+                </div>
+                <div class="hero-gif-small">
+                    <img src="https://i.ibb.co/QvYxhsMM/automacao.gif" alt="Automação Python">
+                    <span class="gif-badge" style="font-size:0.6rem;">Automação Python</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<hr class="divider">
+
+<!-- O PROBLEMA -->
+<section id="problema">
+    <div class="container">
+        <p class="section-eyebrow">// 01 · contexto</p>
+        <h2 class="section-title">O Desafio Operacional</h2>
+        <p class="section-desc">
+            Quando o projeto começou, toda a operação de cobrança dependia de processos manuais
+            altamente custosos em tempo e sujeitos a erros humanos. O cenário precisava mudar.
+        </p>
+
+        <div class="problem-grid">
+            <div class="problem-card">
+                <div class="problem-card-icon">⏱️</div>
+                <h3>Alto tempo operacional</h3>
+                <p>Horas diárias consumidas acessando CRM, exportando relatórios manualmente, filtrando credor e período, tratando planilhas com células mescladas.</p>
+            </div>
+            <div class="problem-card">
+                <div class="problem-card-icon">⚠️</div>
+                <h3>Inconsistências nos dados</h3>
+                <p>Sem padronização, cada relatório era ligeiramente diferente. Erros de consolidação geravam divergências que comprometiam análises estratégicas.</p>
+            </div>
+            <div class="problem-card">
+                <div class="problem-card-icon">📁</div>
+                <h3>Acúmulo de arquivos locais</h3>
+                <p>Centenas de planilhas Excel espalhadas por pastas locais, sem histórico centralizado, sem versionamento, difíceis de auditar.</p>
+            </div>
+            <div class="problem-card">
+                <div class="problem-card-icon">💸</div>
+                <h3>Envios Manuais e Custos</h3>
+                <p>O volume crescia, mas o processo não acompanhava. Comprar licenças de BI para cada operador era inviável, o que obrigava a gestão a tirar prints diários da tela e enviar um por um no WhatsApp.</p>
+            </div>
+        </div>
+
+        <!-- PRINTS DO CAOS: relatórios antigos -->
+        <p style="font-family: var(--mono); font-size: 0.7rem; color: var(--muted); margin-bottom: 1rem;">// estado inicial — relatórios manuais</p>
+        <div class="before-imgs">
+            <div class="before-img-item">
+                <img src="https://i.ibb.co/fdRFpzhB/relatorio-baguncado-com-mesclas.png" alt="Relatório com mesclas">
+                <span class="before-img-label">Planilha com células mescladas</span>
+            </div>
+            <div class="before-img-item">
+                <img src="https://i.ibb.co/FkXwXXgb/relatorio-excel-manha.png" alt="Relatório Excel manhã">
+                <span class="before-img-label">Relatório Excel — rotina manual</span>
+            </div>
+            <div class="before-img-item">
+                <img src="https://i.ibb.co/ddgwrsX/relatorio-manual-excel.png" alt="Relatório manual">
+                <span class="before-img-label">Processo de consolidação manual</span>
+            </div>
+        </div>
+
+        <div style="margin-top: 2rem; display: flex; align-items: center; gap: 0.5rem;">
+            <img src="https://i.ibb.co/sJ9cXsf2/Adobe-Express-relatorio-manuais.gif" alt="GIF relatórios manuais"
+                style="border-radius: 12px; border: 1px solid var(--border); max-width: 480px; width: 100%;">
+        </div>
+    </div>
+</section>
+
+<hr class="divider">
+
+<!-- EVOLUÇÃO: TIMELINE -->
+<section id="evolucao">
+    <div class="container">
+        <p class="section-eyebrow">// 02 · evolução da solução</p>
+        <h2 class="section-title">Da Planilha ao Servidor Linux</h2>
+        <p class="section-desc">
+            A transformação não aconteceu de uma vez. Foi uma evolução técnica deliberada,
+            etapa por etapa, sempre com foco em impacto real na operação.
+        </p>
+
+        <div class="timeline">
+
+            <!-- STEP 1 -->
+            <div class="timeline-item">
+                <span class="timeline-step">Etapa 01</span>
+                <h3>Processo Manual em Excel</h3>
+                <p>Ponto de partida: relatórios montados linha por linha no Excel. Tratamento manual de planilhas com células mescladas, filtros manuais por credor e período, consolidação sem padrão. Cada atualização consumia horas da equipe.</p>
+                <div class="timeline-tags">
+                    <span class="tag">Excel</span>
+                    <span class="tag">Manual</span>
+                    <span class="tag">Alto custo operacional</span>
+                </div>
+            </div>
+
+            <!-- STEP 2 -->
+            <div class="timeline-item">
+                <span class="timeline-step">Etapa 02</span>
+                <h3>Padronização com Power Query</h3>
+                <p>Primeiro ganho concreto: automatização do tratamento dentro do Excel via Power Query. Remoção de mesclas, padronização de colunas e estruturação dos dados para análises básicas. Redução significativa do trabalho de "limpeza" manual.</p>
+                <div class="timeline-tags">
+                    <span class="tag">Power Query</span>
+                    <span class="tag">ETL parcial</span>
+                    <span class="tag">Padronização</span>
+                </div>
+            </div>
+
+            <!-- STEP 3 -->
+            <div class="timeline-item">
+                <span class="timeline-step">Etapa 03</span>
+                <h3>Migração para Power BI</h3>
+                <p>Com os dados estruturados, o próximo passo foi visualização em Power BI. Porém, isso gerou um novo gargalo: o custo de licenças Pro por operador era altíssimo. A solução paliativa era a gestão tirar prints dos resultados e enviar todo dia no chat para cada operador.</p>
+                <div class="timeline-img-row cols-2">
+                    <div class="timeline-img-item">
+                        <img src="https://i.ibb.co/mVhFP2kH/desempenho-operador-powerbi.png" alt="Desempenho operador Power BI">
+                    </div>
+                    <div class="timeline-img-item">
+                        <img src="https://i.ibb.co/bjLP3WZf/home-powerbi.png" alt="Home Power BI">
+                    </div>
+                </div>
+                <div class="timeline-tags" style="margin-top: 0.8rem;">
+                    <span class="tag">Power BI</span>
+                    <span class="tag">DAX</span>
+                    <span class="tag">KPIs operacionais</span>
+                    <span class="tag">Dashboards interativos</span>
+                </div>
+            </div>
+
+            <!-- STEP 4 -->
+            <div class="timeline-item">
+                <span class="timeline-step">Etapa 04</span>
+                <h3>Criação de Banco de Dados Interno</h3>
+                <p>Eliminar de vez os arquivos locais. Um banco de dados relacional passou a centralizar todo o histórico da operação — contratos, pagamentos, inadimplência, desempenho por credor. Fim dos arquivos Excel espalhados, início do dado confiável e auditável.</p>
+                <div class="timeline-tags">
+                    <span class="tag">SQL</span>
+                    <span class="tag">Banco relacional</span>
+                    <span class="tag">Centralização de dados</span>
+                    <span class="tag">Histórico consolidado</span>
+                </div>
+            </div>
+
+            <!-- STEP 5 -->
+            <div class="timeline-item">
+                <span class="timeline-step">Etapa 05</span>
+                <h3>Automação Completa com Python</h3>
+                <p>Scripts Python passaram a fazer tudo automaticamente: acessar o CRM, extrair os dados, tratar inconsistências, padronizar e inserir no banco de dados. O que levava horas passou a rodar em minutos, sem intervenção humana.</p>
+                <div class="timeline-img-row cols-1">
+                    <div class="timeline-img-item">
+                        <img src="https://i.ibb.co/S7P9hsBC/automacao-relatorioe-dasboard.png" alt="Automação relatório e dashboard">
+                    </div>
+                </div>
+                <div class="timeline-tags" style="margin-top: 0.8rem;">
+                    <span class="tag">Python</span>
+                    <span class="tag">Pandas</span>
+                    <span class="tag">ETL automatizado</span>
+                    <span class="tag">Integração CRM → DB</span>
+                </div>
+            </div>
+
+            <!-- STEP 6 -->
+            <div class="timeline-item">
+                <span class="timeline-step">Etapa 06</span>
+                <h3>Dashboard Próprio e Infra 24/7</h3>
+                <p>O grande salto tecnológico! Substituímos o Power BI por um Web App próprio (Dash/Python) em VPS Linux. Os operadores agora acessam com login seguro (senhas com hash) e visualizam apenas a própria produção. Fim dos custos com licenças, fim dos envios de prints, operação automatizada com systemd 24/7.</p>
+                <div class="timeline-tags">
+                    <span class="tag">Linux</span>
+                    <span class="tag">systemd</span>
+                    <span class="tag">VPS</span>
+                    <span class="tag">Execução 24/7</span>
+                    <span class="tag">Agendamento automático</span>
+                    <span class="tag">Infra</span>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<hr class="divider">
+
+<!-- STACK -->
+<section id="stack">
+    <div class="container">
+        <p class="section-eyebrow">// 03 · tecnologias</p>
+        <h2 class="section-title">Stack Tecnológica</h2>
+        <p class="section-desc">Cada ferramenta foi escolhida por uma razão específica dentro do pipeline.</p>
+
+        <div class="stack-grid">
+            <div class="stack-card">
+                <div class="stack-icon"><i class="fab fa-python" style="color:#3776AB"></i></div>
+                <div class="stack-name">Python</div>
+                <div class="stack-cat">Automação & ETL</div>
+            </div>
+            <div class="stack-card">
+                <div class="stack-icon"><i class="fas fa-table" style="color:#150458"></i></div>
+                <div class="stack-name">Pandas</div>
+                <div class="stack-cat">Tratamento de dados</div>
+            </div>
+            <div class="stack-card">
+                <div class="stack-icon"><i class="fas fa-database" style="color:#00758f"></i></div>
+                <div class="stack-name">SQL</div>
+                <div class="stack-cat">Banco de dados</div>
+            </div>
+            <div class="stack-card">
+                <div class="stack-icon"><i class="fas fa-chart-bar" style="color:#F2C811"></i></div>
+                <div class="stack-name">Power BI</div>
+                <div class="stack-cat">Visualização & BI</div>
+            </div>
+            <div class="stack-card">
+                <div class="stack-icon"><i class="fas fa-file-excel" style="color:#1F724C"></i></div>
+                <div class="stack-name">Power Query</div>
+                <div class="stack-cat">Transformação</div>
+            </div>
+            <div class="stack-card">
+                <div class="stack-icon"><i class="fab fa-linux" style="color:#FCC624"></i></div>
+                <div class="stack-name">Linux</div>
+                <div class="stack-cat">Infraestrutura</div>
+            </div>
+            <div class="stack-card">
+                <div class="stack-icon"><i class="fas fa-cogs" style="color:#aaa"></i></div>
+                <div class="stack-name">systemd</div>
+                <div class="stack-cat">Execução 24/7</div>
+            </div>
+            <div class="stack-card">
+                <div class="stack-icon"><i class="fas fa-clock" style="color:#888"></i></div>
+                <div class="stack-name">Scheduler</div>
+                <div class="stack-cat">Agendamento</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<hr class="divider">
+
+<!-- BEFORE / AFTER -->
+<section id="comparativo">
+    <div class="container">
+        <p class="section-eyebrow">// 04 · antes vs depois</p>
+        <h2 class="section-title">O Antes e o Depois</h2>
+        <p class="section-desc">A diferença é objetiva.</p>
+
+        <div class="ba-grid">
+            <div class="ba-card before">
+                <div class="ba-header">
+                    <span class="ba-dot"></span>
+                    <span class="ba-title">Antes — Processo Manual</span>
+                </div>
+                <ul class="ba-list">
+                    <li>Exportação e filtro de relatórios na mão</li>
+                    <li>Consolidação manual de arquivos Excel</li>
+                    <li>Altos custos de licenças de visualização</li>
+                    <li>Gestão obrigada a tirar prints dos resultados</li>
+                    <li>Envio diário dos prints via WhatsApp para operadores</li>
+                    <li>Inescalável conforme volume e equipe cresciam</li>
+                </ul>
+            </div>
+            <div class="ba-card after">
+                <div class="ba-header">
+                    <span class="ba-dot"></span>
+                    <span class="ba-title">Depois — Plataforma Web 100% Automatizada</span>
+                </div>
+                <ul class="ba-list">
+                    <li>Pipeline Python extrai, trata e salva no DB automaticamente</li>
+                    <li>Dashboard Web Próprio, eliminando custos de licenças</li>
+                    <li>Operadores com acesso direto via login (senhas seguras com hash)</li>
+                    <li>Visualização isolada: cada um vê apenas os próprios dados</li>
+                    <li>Fim total do envio manual de relatórios e prints</li>
+                    <li>Execução 24/7 em VPS Linux — 100% escalável e seguro</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+<hr class="divider">
+
+<!-- DASHBOARDS: GALERIA -->
+<section id="dashboards">
+    <div class="container">
+        <p class="section-eyebrow">// 05 · resultado visual</p>
+        <h2 class="section-title">Os Dashboards em Produção</h2>
+        <p class="section-desc">
+            Dashboards operacionais alimentados pela pipeline automatizada — dados fictícios para preservar a confidencialidade.
+        </p>
+
+        <div class="gallery-grid">
+            <div class="gallery-item" onclick="openLightbox(this)">
+                <img src="https://i.ibb.co/q3s2yKqq/dashboard-tela-dashboard.png" alt="Dashboard principal">
+                <div class="gallery-overlay"><span class="gallery-label">Visão geral do dashboard</span></div>
+            </div>
+            <div class="gallery-item" onclick="openLightbox(this)">
+                <img src="https://i.ibb.co/dJ7m8Sj0/dashboard-novo.png" alt="Dashboard novo">
+                <div class="gallery-overlay"><span class="gallery-label">Versão atualizada</span></div>
+            </div>
+            <div class="gallery-item" onclick="openLightbox(this)">
+                <img src="https://i.ibb.co/6JWpmVRN/dashboard-pagamentos.png" alt="Dashboard pagamentos">
+                <div class="gallery-overlay"><span class="gallery-label">Análise de pagamentos</span></div>
+            </div>
+            <div class="gallery-item" onclick="openLightbox(this)">
+                <img src="https://i.ibb.co/LDQyWKS0/dashboard-visoes-mes-a-mes.png" alt="Visão mês a mês">
+                <div class="gallery-overlay"><span class="gallery-label">Comparativo mês a mês</span></div>
+            </div>
+            <div class="gallery-item" onclick="openLightbox(this)">
+                <img src="https://i.ibb.co/Wvjqn0qW/dashboard-visao-operador.png" alt="Visão por operador">
+                <div class="gallery-overlay"><span class="gallery-label">Desempenho por operador</span></div>
+            </div>
+            <div class="gallery-item" onclick="openLightbox(this)">
+                <img src="https://i.ibb.co/NghTCTYq/dashboard-visao-operador-resultados.png" alt="Resultados operador">
+                <div class="gallery-overlay"><span class="gallery-label">Resultados operacionais</span></div>
+            </div>
+        </div>
+
+        <!-- Power BI por credor -->
+        <p style="font-family: var(--mono); font-size: 0.7rem; color: var(--muted); margin: 2rem 0 1rem;">// dashboards power bi — visão por credor</p>
+        <div class="gallery-grid">
+            <div class="gallery-item" onclick="openLightbox(this)">
+                <img src="https://i.ibb.co/9Hy6QBLF/producao-agoracred-powerbi.png" alt="Produção Agoracred">
+                <div class="gallery-overlay"><span class="gallery-label">Produção — Credor A</span></div>
+            </div>
+            <div class="gallery-item" onclick="openLightbox(this)">
+                <img src="https://i.ibb.co/v68W9Zyn/producao-semear-powerbi.png" alt="Produção Semear">
+                <div class="gallery-overlay"><span class="gallery-label">Produção — Credor B</span></div>
+            </div>
+            <div class="gallery-item" onclick="openLightbox(this)">
+                <img src="https://i.ibb.co/mVhFP2kH/desempenho-operador-powerbi.png" alt="Desempenho operador">
+                <div class="gallery-overlay"><span class="gallery-label">Desempenho — Operadores</span></div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<hr class="divider">
+
+<!-- IMPACTO -->
+<section id="impacto">
+    <div class="container">
+        <p class="section-eyebrow">// 06 · resultados</p>
+        <h2 class="section-title">Impacto na Operação</h2>
+        <p class="section-desc">Resultados concretos que justificam cada etapa da evolução.</p>
+
+        <div class="impact-grid">
+            <div class="impact-card">
+                <div class="impact-icon">⚡</div>
+                <div class="impact-title">Pipeline 100% automatizada</div>
+                <div class="impact-desc">Zero intervenção humana no fluxo de extração, tratamento e carga de dados.</div>
+            </div>
+            <div class="impact-card">
+                <div class="impact-icon">⏰</div>
+                <div class="impact-title">Horas → Minutos</div>
+                <div class="impact-desc">Processo que consumia horas diárias passou a rodar em minutos, de forma autônoma.</div>
+            </div>
+            <div class="impact-card">
+                <div class="impact-icon">🗄️</div>
+                <div class="impact-title">Dados centralizados</div>
+                <div class="impact-desc">Fim dos arquivos espalhados. Banco de dados único, confiável e auditável.</div>
+            </div>
+            <div class="impact-card">
+                <div class="impact-icon">📊</div>
+                <div class="impact-title">Dashboards em tempo real</div>
+                <div class="impact-desc">Gestão com visibilidade imediata dos KPIs operacionais sem esperar relatório manual.</div>
+            </div>
+            <div class="impact-card">
+                <div class="impact-icon">🖥️</div>
+                <div class="impact-title">Execução 24/7</div>
+                <div class="impact-desc">VPS Linux com systemd garantindo disponibilidade contínua, independente de máquina local.</div>
+            </div>
+            <div class="impact-card">
+                <div class="impact-icon">💰</div>
+                <div class="impact-title">Zero Licenciamento</div>
+                <div class="impact-desc">Economia massiva ao substituir o Power BI por um Dashboard próprio hospedado internamente.</div>
+            </div>
+            <div class="impact-card">
+                <div class="impact-icon">🔒</div>
+                <div class="impact-title">Acesso Seguro (Hash)</div>
+                <div class="impact-desc">Senhas criptografadas e restrição de acesso: o operador só visualiza a sua própria performance.</div>
+            </div>
+            <div class="impact-card">
+                <div class="impact-icon">🔄</div>
+                <div class="impact-title">Melhoria contínua</div>
+                <div class="impact-desc">Arquitetura modular que permite evoluções sem reescrever o pipeline do zero.</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section">
+    <div class="container">
+        <div class="cta-box">
+            <h2>Quer ver mais do portfólio?</h2>
+            <p>Projetos reais de dados, BI e automação — do Excel ao servidor Linux.</p>
+            <a href="index.html" class="btn-cta">
+                <i class="fas fa-arrow-left"></i> Voltar ao portfólio
+            </a>
+            <a href="https://www.linkedin.com/in/gusthavobi" target="_blank" class="btn-secondary">
+                <i class="fab fa-linkedin"></i> LinkedIn
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- LIGHTBOX -->
+<div class="lightbox" id="lightbox" onclick="closeLightbox(event)">
+    <button class="lightbox-close" onclick="closeLightbox()">&times;</button>
+    <img id="lightbox-img" src="" alt="">
+</div>
+
+<script>
+// LIGHTBOX
+function openLightbox(el) {
+    const img = el.querySelector('img');
+    document.getElementById('lightbox-img').src = img.src;
+    document.getElementById('lightbox').classList.add('open');
+    document.body.style.overflow = 'hidden';
+}
+
+function closeLightbox(e) {
+    if (!e || e.target !== document.getElementById('lightbox-img')) {
+        document.getElementById('lightbox').classList.remove('open');
+        document.body.style.overflow = '';
+    }
+}
+
+document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') closeLightbox();
+});
+
+// TIMELINE SCROLL ANIMATION
+const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry, i) => {
+        if (entry.isIntersecting) {
+            setTimeout(() => entry.target.classList.add('visible'), i * 80);
+        }
+    });
+}, { threshold: 0.15 });
+
+document.querySelectorAll('.timeline-item').forEach(item => observer.observe(item));
+</script>
+
+</body>
+</html>
